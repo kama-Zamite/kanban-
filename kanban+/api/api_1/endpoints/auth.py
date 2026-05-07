@@ -1,0 +1,1 @@
+# Ficheiros por recurso (ex: users.py, items.py)
