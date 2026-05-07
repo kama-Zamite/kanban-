@@ -1,8 +1,9 @@
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
-    relationship
+    relationship,
 )
+from sqlalchemy import ForeignKey
 from ..db.base import Base
 from typing import List
 
@@ -20,4 +21,12 @@ class User(Base):
 
 
 class Task(Base):
-    ...
+    __tablename__ = 'tasks'
+    id : Mapped[int] = mapped_column(init=False, primary_key=True)
+    title: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str | None] = mapped_column(nullable=True, default=None)
+    priority: Mapped[str] = mapped_column(default='Baixa')
+    creater_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    creater: Mapped['User'] = relationship(init=False)
+
+    # assingee: 
