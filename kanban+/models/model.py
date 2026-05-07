@@ -1,6 +1,7 @@
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
+    relationship
 )
 from ..db.base import Base
 from typing import List
@@ -15,4 +16,5 @@ class User(Base):
     admin: Mapped[bool] = mapped_column(default=False)
     active: Mapped[bool] = mapped_column(default=True)
 
-    as
+    tasks_assigend: Mapped[List["Task"]] = relationship(back_populates="assingee", default_factory=List)
+
