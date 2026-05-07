@@ -1,0 +1,66 @@
+[project]
+name = "kanban"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "kama-Zamite",email = "pedrozamite1@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4"
+dependencies = [
+    "fastapi[standard] (>=0.136.1,<0.137.0)",
+    "sqlalchemy[asyncio] (>=2.0.49,<3.0.0)",
+    "aiosqlite (>=0.22.1,<0.23.0)",
+    "alembic (>=1.18.4,<2.0.0)",
+    "pyjwt (>=2.12.1,<3.0.0)",
+    "pwdlib[argon2] (>=0.3.0,<0.4.0)",
+    "pydantic-settings (>=2.14.0,<3.0.0)",
+    "uvicorn (>=0.46.0,<0.47.0)",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.3,<10.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "pytest-asyncio (>=1.3.0,<2.0.0)",
+    "ruff (>=0.15.12,<0.16.0)",
+    "taskipy (>=1.14.1,<2.0.0)"
+]
+
+
+[tool.ruff]
+line-length = 79
+extend-exclude = ['migrations']
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'FAST']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = '-p no:warnings'
+async_default_fixture_loop_scape = 'function'
+
+
+[tool.taskipy.tasks]
+pre_lint = 'ruff check --fix'
+lint = 'ruff check'
+format = 'ruff format'
+run = 'fastapi dev kanban+'
+pre_test = 'pytest -x -s --cov=kanban+ --v'
+pos_test = 'coverage html'
+
+
+[tool.coverage.run]
+concurrency = ['phread', 'greenlet']
+
+
